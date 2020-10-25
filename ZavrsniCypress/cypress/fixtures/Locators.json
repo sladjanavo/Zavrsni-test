@@ -1,0 +1,93 @@
+{
+    "Headers":{
+        "Signin":".nav-item",
+        "Register":".nav-link"
+    },
+    "Login":{
+        "Title":".form-signin-heading",
+        "Email":".form-control",
+        "Password":".form-control",
+        "Submit":".btn"
+    },
+    "Register":{
+        "FirstName":"#firstName",
+        "LastName":"#lastName",
+        "Password":"#password",
+        "PasswordConfirm":"#passwordConfirmation",
+        "Email":"#email",
+        "Checkbox":"#termsAndConditions",
+        "Submit":".btn"
+       
+    },
+    "Professors":{
+        "Professorsbtn":".nav-link",
+        "AllProfessors":".dropdown-item",
+        "CreateProfessors":".dropdown-item",
+        "Title":".h3",
+        "FirstName":"#firstName",
+        "LastName":"#lastName",
+        "AddImage":".btn",
+        "Submit":".btn",
+        "ImageUrl":".form-control",
+        "MoveUp":".btn",
+        "MoveDown":".btn",
+        "RemoveImage":".btn",
+        "Filter":".form-control"
+    },
+
+    "CreateGradebook":{
+        "CreateGradebookbtn":".nav-link",
+        "BigTitle":"h3",
+        "Title":"#title",
+        "Professor":"#professor",
+        "Submit":".btn",
+        "Filter":".form-control"
+
+
+
+    },
+    "MyGradebook":{
+        "MyGradebookbtn":".nav-link",
+        "AddStudent":".btn",
+        "DeleteGradebook":".btn",
+        "EditGradebook":".btn",
+        "AddImage":".btn",
+        "Submit":".btn",
+        "ImageUrl":".form-control",
+        "StudentFirstName":"#firstName",
+        "StudentLastName":"#lastName",
+        "Title":"#title",
+        "Professor":"#professor",
+        "NewTitle":"td",
+        "Comments":".form-control",
+        "AllComments":".comments"
+        
+
+
+    },
+
+    "Gradebooks":{
+        "BigTitle":".h3",
+        "Signout":".nav-item",
+        "Gradebooksbtn":".nav-link",
+        "Filter":".form-control",
+        "Search":".btn",
+        "AddStudent":".btn",
+        "DeleteGradebook":".btn",
+        "EditGradebook":".btn",
+        "StudentFirstName":"#firstName",
+        "StudentLastName":"#lastName",
+        "AddImage":".btn",
+        "ImageUrl":".form-control",
+        "Submit":".btn",
+        "Title":"#title",
+        "NewTitle":"td",
+        "Comments":".form-control",
+        "AllComments":".comments",
+        "DeleteComment":".btn",
+        "Next":".btn",
+        "Previous":".btn"
+
+
+   }
+}
