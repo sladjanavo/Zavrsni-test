@@ -1,0 +1,1377 @@
+{
+	"info": {
+		"_postman_id": "aa1568db-971b-40db-93c1-f0ddd46ae092",
+		"name": "GradebookSV",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "14108e6f-8ccc-4c41-be8c-c27c223b7f2c",
+								"exec": [
+									"var email = \"test1\" + _.random(1,100) + \"gmail.com\"",
+									"pm.environment.set(\"email\",email);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ed0045c6-d4d2-441a-a442-32909e91520d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\":\"{{firstName}}\",\n    \"lastName\":\"{{LastName}}\",\n    \"email\":\"{{email}}\",\n    \"password\":\"{{password}}\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}register",
+							"host": [
+								"{{baseUrl}}register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register with existing email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "66dfe55f-0484-4229-96fa-67dea23d1bc2",
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"    pm.response.to.have.status(422);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"{{secondEmail}}\",\r\n    \"password\":\"{{password}}\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}login",
+							"host": [
+								"{{baseUrl}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register second user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "853504b6-249b-498f-871e-41d5dec5de9c",
+								"exec": [
+									"var secondEmail = \"testsladjana\" + _.random(1,100) + \"gmail.com\"",
+									"pm.environment.set(\"secondEmail\",secondEmail);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6ca5a803-0ade-4f9a-ae39-6f43bc9abb81",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\":\"{{firstName2}}\",\n    \"lastName\":\"{{lastName2}}\",\n    \"email\":\"{{secondEmail}}\",\n    \"password\":\"{{password}}\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}register",
+							"host": [
+								"{{baseUrl}}register"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5b3a75c0-ea49-488f-b814-fd610fecb4ec",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"var user_id = jsonData.user.id;",
+									"pm.environment.set(\"user_id\", user_id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{email}}\",\n    \"password\":\"{{password}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}login",
+							"host": [
+								"{{baseUrl}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login with incorrect password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "92a3b896-e7b2-432c-9148-174339aefbe5",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test2@gmail.com\",\r\n    \"password\":\"123456aaa\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}login",
+							"host": [
+								"{{baseUrl}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login with incorrect email format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "70dbce80-c195-49da-baee-375640bff7ad",
+								"exec": [
+									"pm.globals.set(\"variable_key\", \"variable_value\");\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test2gmail.com\",\r\n    \"password\":\"{{password}}\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}login",
+							"host": [
+								"{{baseUrl}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login second user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b8c6ccd6-0e6d-4b4a-a3aa-7dc9691d15e2",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"postman.setEnvironmentVariable(\"token2\", jsonData.token);",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 800ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);",
+									"});",
+									"",
+									"var secondUser_id = jsonData.user.id;",
+									"pm.environment.set(\"secondUser_id\", secondUser_id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{secondEmail}}\",\n    \"password\":\"{{password}}\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}login",
+							"host": [
+								"{{baseUrl}}login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Create Gradebook",
+			"item": [
+				{
+					"name": "Create Gradebook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0752bdeb-6816-4f17-ae7d-0dc7d14e6f33",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var myGradebookId = jsonData.id\r",
+									"    \r",
+									"pm.environment.set(\"myGradebookId\", myGradebookId);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Duck\",\r\n    \"professor_id\":48\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}diaries",
+							"host": [
+								"{{baseUrl}}diaries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Gradebook without professor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "85bb7fc9-4837-413a-a04d-027cde3aa051",
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"    pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Test2\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}diaries",
+							"host": [
+								"{{baseUrl}}diaries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visit page Create Gradebook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb4848aa-cab8-4725-af11-fff25f1c4916",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}professors",
+							"host": [
+								"{{baseUrl}}professors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create gradebook without title",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c46cbba-5256-413d-a6e8-564778a76342",
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"    pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"professor_id\":27\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}diaries",
+							"host": [
+								"{{baseUrl}}diaries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create second gradebook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4f93aab8-28bc-4f7e-ab1b-33e3fec186b4",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"    var jsonData = pm.response.json();",
+									"    var mySecondGradebookId = jsonData.id",
+									"    ",
+									"pm.environment.set(\"mySecondGradebookId\", mySecondGradebookId);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\":\"Dino\",\n    \"professor_id\":170\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}diaries",
+							"host": [
+								"{{baseUrl}}diaries"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "My Gradebook",
+			"item": [
+				{
+					"name": "Visit My Gradebook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bbb910d8-4a90-4f18-9190-cabe31a8a5eb",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}diaries/my-diary/{{myGradebookId}}",
+							"host": [
+								"{{baseUrl}}diaries"
+							],
+							"path": [
+								"my-diary",
+								"{{myGradebookId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "59c73f8e-ea99-48c8-9f9d-b3af29c5dbe2",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.contains(\"Gallery Saved!!\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Simon\",\r\n    \"lastName\":\"Nadj\",\r\n    \"url\":[\"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS-jn1-CH6wt3j8Yz3GSWwyIdHZGaQE6BUBZw&usqp=CAU\"]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}diaries/{{myGradebookId}}/students",
+							"host": [
+								"{{baseUrl}}diaries"
+							],
+							"path": [
+								"{{myGradebookId}}",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit My Gradebook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "369987cc-e5e3-4724-942c-775e6b941418",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":52,\r\n    \"title\":\"Test2edited\",\r\n    \"professor_id\":44,\r\n    \"created_at\":\"2020-10-20 21:09:11\",\r\n    \"updated_at\":\"2020-10-20 21:09:11\",\r\n    \"professor\":{\r\n        \"id\":44,\r\n        \"user_id\":44,\r\n        \"url\":null,\r\n        \"created_at\":\"2020-10-20 20:34:23\",\r\n        \"updated_at\":\"2020-10-20 20:34:23\",\r\n        \"user\":{\r\n            \"id\":44,\r\n            \"firstName\":\"{{firstName}}\",\r\n            \"lastName\":\"{{LastName}}\",\r\n            \"email\":\"{{email}}\",\r\n            \"email_verified_at\":\"2020-10-20 20:34:23\",\r\n            \"termsAndConditions\":null,\r\n            \"created_at\":\"2020-10-20 20:34:23\",\r\n            \"updated_at\":\"2020-10-20 20:34:23\"}},\r\n            \"students\":[{\"id\":44,\"firstName\":\"Simon\",\"lastName\":\"Nadj\",\"diary_id\":52,\"created_at\":\"2020-10-20 21:12:01\",\"updated_at\":\"2020-10-20 21:12:01\"},{\"id\":45,\"firstName\":\"Simon\",\"lastName\":\"Nadj\",\"diary_id\":52,\"created_at\":\"2020-10-20 21:15:24\",\"updated_at\":\"2020-10-20 21:15:24\"}],\"comments\":[]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}diaries/{{myGradebookId}}",
+							"host": [
+								"{{baseUrl}}diaries"
+							],
+							"path": [
+								"{{myGradebookId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete My Gdarebook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2a34d6bc-f8f8-4336-96f6-c31cb15a4eac",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.environment.unset(\"gallery_id\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}diaries/{{gradebookId}}",
+							"host": [
+								"{{baseUrl}}diaries"
+							],
+							"path": [
+								"{{gradebookId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Professor",
+			"item": [
+				{
+					"name": "Visit page Professors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "992ad5bb-8771-4232-b0ff-e4898f125169",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}professors",
+							"host": [
+								"{{baseUrl}}professors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Professor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2c42983f-2d8e-421a-a427-d6c961efd0b0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\":[\"https://mpng.subpng.com/20190729/eru/kisspng-big-boss-baby-the-boss-baby-film-poster-family-5d3ead55b90e85.981531411564388693758.jpg\"],\r\n    \"firstName\":\"Sladjana\",\r\n    \"lastName\":\"Vojnovic\",\r\n    \"diary_id\":\"\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}professors",
+							"host": [
+								"{{baseUrl}}professors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Professor without image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "232ad81d-b4c7-48b7-a20b-7c0ea23e3327",
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"    pm.response.to.have.status(422);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.contains(\"The given data was invalid.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\":[],\r\n    \"firstName\":\"Sladjana2\",\r\n    \"lastName\":\"Vojnovic2\",\r\n    \"diary_id\":\"\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}professors",
+							"host": [
+								"{{baseUrl}}professors"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Gradebooks",
+			"item": [
+				{
+					"name": "Add Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cbeab14f-08c1-4cc6-8d2b-1503986f1efb",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\":\"Petar\",\n    \"lastName\":\"Petrovic\",\n    \"url\":[\"https://static4.depositphotos.com/1006994/298/v/450/depositphotos_2983099-stock-illustration-grunge-design.jpg\"]\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}diaries/5/students",
+							"host": [
+								"{{baseUrl}}diaries"
+							],
+							"path": [
+								"5",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit another author's gradebook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "859a0532-50ad-4487-a8af-4c2d9e9b0e55",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 600ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":41,\r\n    \"title\":\"na drini cuprija\",\r\n    \"professor_id\":72,\r\n    \"created_at\":\"2020-10-20 18:50:54\",\r\n    \"updated_at\":\"2020-10-20 18:50:54\",\r\n    \"professor\":{\r\n        \"id\":13,\r\n        \"user_id\":13,\r\n        \"url\":null,\r\n        \"created_at\":\"2020-10-20 16:32:47\",\r\n        \"updated_at\":\"2020-10-20 16:32:47\",\r\n        \"user\":{\"id\":13,\r\n        \"firstName\":\"Svetlana\",\r\n        \"lastName\":\"Karaba\",\r\n        \"email\":null,\r\n        \"email_verified_at\":\"2020-10-20 16:32:47\",\r\n        \"termsAndConditions\":null,\r\n        \"created_at\":\"2020-10-20 16:32:47\",\r\n        \"updated_at\":\"2020-10-20 16:32:47\"}},\r\n        \"students\":[],\r\n        \"comments\":[{\"id\":52,\"text\":\"Pozdrav za ljubitelje Ive Andrica\",\r\n        \"diary_id\":41,\r\n        \"user_id\":44,\"created_at\":\"2020-10-20 22:10:53\",\r\n        \"updated_at\":\"2020-10-20 22:10:53\",\r\n        \"user\":{\r\n            \"id\":44,\r\n            \"firstName\":\"Sladjana\",\r\n            \"lastName\":\"Vojnovic\",\r\n            \"email\":\"test2@gmail.com\",\r\n            \"email_verified_at\":\"2020-10-20 20:34:23\",\r\n            \"termsAndConditions\":null,\r\n            \"created_at\":\"2020-10-20 20:34:23\",\r\n            \"updated_at\":\"2020-10-20 20:34:23\"}}]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://gradebook-api.vivifyideas.com/api/diaries/41",
+							"protocol": "https",
+							"host": [
+								"gradebook-api",
+								"vivifyideas",
+								"com"
+							],
+							"path": [
+								"api",
+								"diaries",
+								"41"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "242177ba-453b-4efc-ac1d-3ad7848780ed",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"    var gradebookId = jsonData.diary_id;\r",
+									"\r",
+									"pm.environment.set(\"gradebookId\", gradebookId);\r",
+									"    \r",
+									"\r",
+									"\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var commentId = jsonData.id;\r",
+									"\r",
+									"pm.environment.set(\"commentId\", commentId);\r",
+									"    "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\":\"Pozdrav za ljubitelje Ive Andrica\",\r\n    \"user_id\":13\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}diaries/{{mySecondGradebookId}}/comments",
+							"host": [
+								"{{baseUrl}}diaries"
+							],
+							"path": [
+								"{{mySecondGradebookId}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4465309f-3d5f-48df-b320-2062b0d59021",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}comments/{{commentId}}",
+							"host": [
+								"{{baseUrl}}comments"
+							],
+							"path": [
+								"{{commentId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
